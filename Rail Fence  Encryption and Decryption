@@ -1,0 +1,150 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+// encryption function
+string encryption(string text, int key)
+{
+    char rail[key][(text.length())];
+//matrix that will contain cipher text
+//initialize matrix with '\n' characters
+    for (int i=0; i < key; i++)
+        for (int j = 0; j < text.length(); j++)
+            rail[i][j] = '\n';
+// down variable to determine the direction of matrix filling
+    bool down = false;
+    int row = 0, col = 0;
+    for (int i=0; i < text.length(); i++)
+    {
+//reverse the direction if we reached to top or bottom
+        if (row == 0 || row == key-1)
+            down = !down;
+// fill the plain text character
+        rail[row][col++] = text[i];
+// determine the next row using down
+        down?row++ : row--;
+    }
+    cout<<endl;
+    string result;//to store cipher text as a string
+    cout<<" Matrix contents: \n";
+//following loop displays the way characters are stred in the matrix
+    for (int i=0; i < key; i++)
+    {
+        cout<<" row["<<i<<"]-> ";
+        for (int j=0; j < text.length(); j++)
+            if (rail[i][j]!='\n')
+            {
+                result.push_back(rail[i][j]);
+                cout<<rail[i][j]<<" ";
+            }
+            else
+                cout<<"__ ";
+
+        cout<<"\n";
+    }
+    cout<<"\n";
+    return result;
+}
+
+
+// Decryption function
+string decryption(string cipher, int key)
+{
+//matrix to store cipher text
+    char rail[key][cipher.length()];
+    for (int i=0; i < key; i++)
+        for (int j=0; j < cipher.length(); j++)
+            rail[i][j] = '\n';
+
+// down variable to determine the direction of matrix filling
+    bool down;
+
+    int row = 0, col = 0;
+
+// marking the places as '*' inorder to
+// put cipher text character at marked position
+    for (int i=0; i < cipher.length(); i++)
+    {
+// find the direction
+        if (row == 0)
+            down = true;
+        if (row == key-1)
+            down = false;
+// put '*' mark
+        rail[row][col++] = '*';
+// find the next row using down
+        down?row++ : row--;
+    }
+
+// fill the rail matrix
+    int index = 0;
+    for (int i=0; i<key; i++)
+        for (int j=0; j<cipher.length(); j++)
+            if (rail[i][j] == '*' && index<cipher.length())
+                rail[i][j] = cipher[index++];
+
+
+// reading the matrix in zig-zag manner
+    string result;
+    row = 0, col = 0;
+    for (int i=0; i< cipher.length(); i++)
+    {
+        if (row == 0)
+            down = true;
+        if (row == key-1)
+            down = false;
+
+        if (rail[row][col] != '*')
+            result.push_back(rail[row][col++]);
+
+        down?row++: row--;
+    }
+    return result;
+}
+
+
+
+int main() //program execution starts from here
+{
+    cout<<"\n__________Rail Fence Cipher__________";
+    int ch=1,k;
+    while(ch>0 && ch<3)
+    {
+        cout<<"\n1. Perform Encryption\n2. Perform Decryption\n3. Close Application";
+        cout<<"\nEnter your choice(1/2/3): ";
+        cin>>ch;
+        switch(ch)
+        {
+        case 1:
+            cout<<"\n  Encryption ";
+            cout<<"\n Enter the Key :  ";
+            cin>>k;
+            cin.ignore();
+            cout<<" Enter the Plain Text :";
+            cin.getline(s1,1024);
+            s=encryption(s1, k);
+            cout<<" Cipher text is: "<<s<<endl;
+            cout<<" Encryption Done \n";
+            break;
+        case 2:
+            cout<<"\n  Decryption ";
+            cout<<"\n Enter the Key ";
+            cin>>k;
+            cin.ignore();
+            cout<<" Enter the Cipher Text : ";
+            cin.getline(s1,1024);
+            s=decryption(s1, k);
+            cout<<" Plain text is: "<<s<<endl;
+            cout<<" Decryption Done \n";
+            break;
+        case 3:
+            cout<<"\n Application closed..!!";
+            return 0;
+        default:
+            cout<<"\n Oops you entered the wrong choice!!";
+            break;
+
+        }
+    }
+    return 0;
+}
