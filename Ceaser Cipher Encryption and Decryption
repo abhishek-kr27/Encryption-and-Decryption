@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+
+void Encryption(){
+unsigned char x[100], ch;
+int i, key;
+cout << "Enter a Plain Text :  ";
+cin >> x;
+cout << "Enter Key: ";
+cin >> key;
+for(i = 0; x[i] != '\0'; i++){
+ch = x[i];
+if(ch >= 'a' && ch <= 'z'){
+ch = ch + key;
+if(ch > 'z'){
+ch = ch - 'z' + 'a' - 1;
+}
+x[i] = ch;
+}
+else if(ch >= 'A' && ch <= 'Z'){
+ch = ch + key;
+if(ch > 'Z'){
+ch = ch - 'Z' + 'A' - 1;
+}
+x[i] = ch;
+}
+}
+cout << "The Cipher Text is :  " << x;
+}
+
+
+void Decryption(){
+unsigned char x[100], ch;
+int i, key;
+cout << "Enter the Cipher Text : ";
+cin >> x;
+cout << "Enter Key: ";
+cin >> key;
+for(i = 0; x[i] != '\0'; i++){
+ch = x[i];
+if(ch >= 'a' && ch <= 'z'){
+ch = ch - key;
+if(ch > 'z'){
+ch = ch - 'z' + 'a' - 1;
+}
+x[i] = ch;
+}
+else if(ch >= 'A' && ch <= 'Z'){
+ch = ch - key;
+if(ch > 'Z'){
+ch = ch - 'Z' + 'A' - 1;
+}
+x[i] = ch;
+}
+}
+cout << "The Plain Text is : " << x;
+}
+
+
+
+int main()
+{
+cout<<"\n Caesar Cipher ";
+int X=1,k;
+while(X>0 && X<3)
+{
+	
+cout<<"\n1. Perform Encryption\n2. Perform Decryption\n3. Close Application";
+cout<<"\nEnter your choice(1/2/3): ";
+cin>>X;
+switch(X)
+
+{
+case 1:
+cout<<"\n Encryption Start "<< endl;
+{
+
+	Encryption();
+}
+cout<<"\n Encryption Done "<< endl;
+break;
+
+case 2:
+cout<<"\n Decryption Start "<< endl;
+{
+   Decryption();
+}
+cout<<"\n Decryption Done "<< endl;
+break;
+
+case 3:
+cout<<"\n Application closed..!!";
+return 0;
+
+default:
+cout<<"\n Oops you entered the wrong choice!!";
+break;
+
+}
+}
+return 0;
+}
